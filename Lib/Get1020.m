@@ -5,7 +5,7 @@ function [Markers, perimeter, Labels] = Get1020(V,LM,aRes)
 % V: filtered MRI volume
 % LM: 4x3 array of 3D coordinates where rows are nasion, left ear, right
 %   ear, and inion, in that order. Columns should be in order of Anterior,
-%   Left, and Superior, as this is the coordinate order from annotating on a
+%   Right, and Superior, as this is the coordinate order from annotating on a
 %   MATLAB RAS volume
 % aRes: spatial resolution of the MRI volume. In nifti, this is
 %   info.PixelDimensions
@@ -59,24 +59,24 @@ for i = 1:length(Hull)-1
     perimeter = perimeter + sqrt(dx^2 + dy^2);
 end
 
-Fp1 = Markers(14,:);
-Fp2 = Markers(21,:);
+Fp2 = Markers(14,:);
+Fp1 = Markers(21,:);
 
-O1 = Markers(20,:);
-O2 = Markers(15,:);
+O2 = Markers(20,:);
+O1 = Markers(15,:);
 
-F3orthog = cross(C3-Fp1, C3-O1);
-F3orthognorm = F3orthog/norm(F3orthog);
-F4orthog = cross(C4-Fp2, C4-O2);
-F4orthognorm = F4orthog/norm(F4orthog);
+F4orthog = cross(C3-Fp2, C3-O2);
+F3orthognorm = F4orthog/norm(F4orthog);
+F3orthog = cross(C4-Fp1, C4-O1);
+F4orthognorm = F3orthog/norm(F3orthog);
 
-markerstemp = find1020onPlane(V, aRes, F3orthognorm, C3, Fp1, O1, [0.25, 0.75], 0);
+markerstemp = find1020onPlane(V, aRes, F3orthognorm, C3, Fp2, O2, [0.25, 0.75], 0);
 Markers = [Markers; markerstemp];
 
-markerstemp = find1020onPlane(V, aRes, F4orthognorm, C4, Fp2, O2, [0.25, 0.75], 0);
+markerstemp = find1020onPlane(V, aRes, F4orthognorm, C4, Fp1, O1, [0.25, 0.75], 0);
 Markers = [Markers; markerstemp]; 
 
-Labels = {'Nz', 'Fpz', 'Fz', 'Cz', 'Pz', 'Oz', 'Iz', 'LHSJ', 'T3', 'C3', 'C4', 'T4', 'RHSJ', 'Fp1', 'O2' 'F7' 'T6' 'T5' 'F8' 'O1' 'Fp2', 'F3', 'P3', 'F4', 'P4'};
+Labels = {'Nz', 'Fpz', 'Fz', 'Cz', 'Pz', 'Oz', 'Iz', 'RHSJ', 'T4', 'C4', 'C3', 'T3', 'LHSJ', 'Fp2', 'O1' 'F8' 'T5' 'T6' 'F7' 'O2' 'Fp1', 'F4', 'P4', 'F3', 'P3'};
 
 viewer = viewer3d;
 

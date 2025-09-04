@@ -9,7 +9,7 @@ This projet is an alternative to MNI warping-based 10-20 extraction algorithms. 
 
 * Ensure that /Lib is added to MATLAB path using addpath(Lib)
 * Run function with "[Markers, hc, Labels] = FilterAndGet1020(LM, nifti_filepath)"
-    * LM is the 4x3 matrix of 3D coordinates for the 4 principal landmarks of the 10-20 system in ALS coordinates
+    * LM is the 4x3 matrix of 3D coordinates for the 4 principal landmarks of the 10-20 system in ARS (anterior, right, superior) coordinates
 * Use slider to set threshold filter to where there is no artifact occluding the surface of the scalp
 * Press "Continue"
 * Ensure markers were placed correctly, and re-run with adjusted filter if not

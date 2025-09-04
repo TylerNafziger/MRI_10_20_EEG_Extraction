@@ -3,9 +3,9 @@ function [Markers, hc, Labels] = FilterAndGet1020(LM, nifti_filepath)
 % principal landmarks
 % 
 % Inputs:
-%   LM: 4x3 array of 3D coordinates where rows are nasion, left ear, right
+%   LM: 4x3 array of 3D coordinates where rows are nasion, right ear, left
 %   ear, and inion, in that order. Columns should be in order of Anterior,
-%   Left, and Superior, as this is the coordinate order from annotating on a
+%   Right, and Superior, as this is the coordinate order from annotating on a
 %   MATLAB RAS volume
 %
 %   nifti_filepath: path to the nifti file containing the MRI volume to use
