@@ -1,4 +1,4 @@
-function [Markers, hc, Labels] = FilterAndGet1020(LM, nifti_filepath)
+function [Markers, perimeter, Labels] = FilterAndGet1020(LM, nifti_filepath)
 % Extracts 10-20 markers from a threshold filtered MRI volume, and it's
 % principal landmarks
 % 
@@ -39,7 +39,7 @@ uiwait(uif);
 scaling = uif.UserData.sliderValue;
 v_filt = volume.Data;
 
-[Markers, hc, Labels] = Get1020(v_filt,LM, aRes);
+[Markers, perimeter, Labels] = Get1020(v_filt,LM, aRes);
 
 close(uif)
 

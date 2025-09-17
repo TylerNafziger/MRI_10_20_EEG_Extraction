@@ -1,4 +1,4 @@
-function [markers, perimline_sorted] = find1020onPlane(V, aRes, plane_orthogonal, plane_offset, start_point, end_point, percentiles, circumferential)
+function [markers, dist] = find1020onPlane(V, aRes, plane_orthogonal, plane_offset, start_point, end_point, percentiles, circumferential)
 
 % Build Plane and extract perimeter
 [sx,sy,sz,principal_direction] = planedefine(plane_orthogonal,plane_offset,V);
@@ -36,6 +36,7 @@ else
     [~, COind] = perimdistance(perimline_sorted,{sx,sy,sz},aRes,principal_direction);
     perimline_sorted = perimline_sorted(1:COind,:);
 end
+
 
 % Remove duplicate points
 Table = table(perimline_sorted(:,1),perimline_sorted(:,2));
@@ -83,5 +84,25 @@ else
         [~,marker_coord] = min(abs(perimdist - (perimdist(end_coord_on_perimeter) + (perimdist(end) - perimdist(end_coord_on_perimeter))*percentiles(idx))));
         markers = [markers; slice2coord3(perimline_sorted_filt(marker_coord,:),secondary_directions,{sx,sy,sz})];
     end
+
+end
+
+% Calculate true distance
+x = perimline_sorted(:,1);
+y = perimline_sorted(:,2);
+Hull = convhull(x, y);
+dist = 0;
+for i = 1:length(Hull)-1
+    dx = (x(Hull(i+1)) - x(Hull(i))) * aRes(principal_direction(1));
+    dy = (y(Hull(i+1)) - y(Hull(i)))  * aRes(principal_direction(1));
+    if (abs(dx) > 50 || abs(dy) > 50) && i == 1 
+        % it's possible for hull to start by closing the neck which should
+        % not be included in this distance
+        Hull = Hull([2:end, 1]);
+        dx = (x(Hull(i+1)) - x(Hull(i))) * aRes(principal_direction(1));
+        dy = (y(Hull(i+1)) - y(Hull(i)))  * aRes(principal_direction(1));
+    end
+    dist = dist + sqrt(dx^2 + dy^2);
+end
 
 end
